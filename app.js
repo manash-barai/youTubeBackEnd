@@ -7,11 +7,14 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/connectdb.js'
 import passport from 'passport';
 import userRoutes from './routes/userRoutes.js'
+import adminRoute from './routes/adminRoute.js'
+import planRoute from './routes/planRoutes.js'
 import searchRoutes from './routes/searchRoute.js'
 import './config/passport-jwt-strategy.js'
 import setTokensCookies from './utils/setTokensCookies.js';
 import './config/google-strategy.js'    // Added for google auth
 import UserModel from './models/User.js';
+import Country from './models/country.js';
 const app = express()
 const port = process.env.PORT || 8000
 const DATABASE_URL = process.env.DATABASE_URL
@@ -41,7 +44,17 @@ app.use(cookieParser())
 
 // Load Routes
 app.use("/api/user", userRoutes)
+
+app.use("/api/userList",adminRoute)
+app.use("/api/plan",planRoute)
 app.use("/api/search", searchRoutes)
+app.get("/api/country",async(req,res)=>{try {
+    const country=await Country.find()
+    res.json(country)
+} catch (error) {
+  console.log(error);
+  
+}})
 
 // Google Auth Routes
 app.get('/auth/google',passport.authenticate('google', { session: false, scope: ['profile', 'email'] }));

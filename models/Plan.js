@@ -1,9 +1,12 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const planSchema = new mongoose.Schema({
   planTitle: {
     type: String,
     required: true,
+  },
+  description:{
+    type: String,
   },
   pricePerMonth: {
     type: Number,
@@ -11,17 +14,22 @@ const planSchema = new mongoose.Schema({
   },
   planDetails: [
     {
-      type: String,
+      feature: String,
+      description: String,
     },
   ],
   planId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type:Number,
     required: true,
     unique: true,
     default: 1,
   },
+  popularity:{
+    type:Boolean,
+    default:false
+  }
 }, { timestamps: true });
 
 const Plan = mongoose.model("Plan", planSchema);
 
-module.exports = Plan;
+export default Plan;

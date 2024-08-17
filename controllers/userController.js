@@ -13,10 +13,10 @@ class UserController {
   static userRegistration = async (req, res) => {
     try {
       // Extract request body parameters
-      const { name, email, password, password_confirmation } = req.body;
-
+      const { name, email, password, password_confirmation,country } = req.body;
+      
       // Check if all required fields are provided
-      if (!name || !email || !password || !password_confirmation) {
+      if (!name || !email || !password || !password_confirmation || !country) {
         return res.status(400).json({ status: "failed", message: "All fields are required" });
       }
 
@@ -36,7 +36,7 @@ class UserController {
       const hashedPassword = await bcrypt.hash(password, salt);
 
       // Create new user
-      const newUser = await new UserModel({ name, email, password: hashedPassword }).save();
+      const newUser = await new UserModel({ name, email,country, password: hashedPassword }).save();
 
       sendEmailVerificationOTP(req, newUser)
 

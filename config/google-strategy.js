@@ -22,6 +22,8 @@ passport.use(new GoogleStrategy({
         const salt = await bcrypt.genSalt(Number(process.env.SALT));
         const hashedPassword = await bcrypt.hash(newPass, salt);
        
+        
+       
         user = await UserModel.create({
           name: profile._json.name,
           email: profile._json.email,
